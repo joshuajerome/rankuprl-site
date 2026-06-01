@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RankupRL — Rocket League companion app</title>
+  <meta name="description" content="A local-first desktop companion for Rocket League: live MMR tracking, watchlists, and study notes from coaching content.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='28'%3E%F0%9F%9A%80%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header>
+    <a href="./" class="brand">RankupRL</a>
+    <nav>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+      <a href="mailto:joshua.jerome@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>RankupRL</h1>
+      <p class="tagline">
+        A local-first desktop companion for Rocket League players who want
+        to improve. Live MMR tracking, watchlists, and study notes from
+        coaching content — all on your own machine.
+      </p>
+      <span class="badge"><span class="dot"></span> Private alpha · in active development</span>
+    </section>
+
+    <section>
+      <h2>What it does</h2>
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>Tracker</h3>
+          <p>Live per-playlist MMR, tier, and lifetime stats pulled from
+            tracker.gg for the Rocket League account you connect.</p>
+        </div>
+        <div class="feature">
+          <h3>Watchlists</h3>
+          <p>Group friends, rivals, and pros to track. Star any player
+            to anchor your Account view to their stats.</p>
+        </div>
+        <div class="feature">
+          <h3>Coaching library <em>(soon)</em></h3>
+          <p>Ingest videos from YouTube / IG / TikTok, transcribe, and
+            organize tips into searchable study notes.</p>
+        </div>
+        <div class="feature">
+          <h3>Local-first</h3>
+          <p>Your data lives in a SQLite file on your machine. No
+            account, no remote backend, no telemetry. Optional Google
+            Drive backup ships in a future phase.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>How accounts work</h2>
+      <p>
+        RankupRL uses <strong>Sign in with Steam</strong> and
+        <strong>Sign in with Epic Games</strong> as the canonical way to
+        identify your Rocket League account. Each provider's OAuth flow
+        runs in your real browser; the access token lands in your local
+        database and is used only to call that provider's APIs as you.
+        Nothing is sent to any RankupRL-controlled server — there isn't
+        one yet.
+      </p>
+      <p>
+        See the <a href="./privacy.html">privacy policy</a> for the full
+        data-handling story.
+      </p>
+    </section>
+
+    <section>
+      <h2>Status</h2>
+      <p>
+        RankupRL is a personal project in private alpha. The desktop
+        binary is not yet publicly distributed. This page exists as the
+        public landing required by OAuth providers (Epic Account
+        Services, Steam Web API) and to document the privacy policy.
+      </p>
+      <p>
+        Questions or feedback?
+        <a href="mailto:joshua.jerome@gmail.com">joshua.jerome@gmail.com</a>.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 RankupRL · A personal project ·
+    <a href="./privacy.html">Privacy</a> ·
+    <a href="./terms.html">Terms</a>
+  </footer>
+</body>
+</html>

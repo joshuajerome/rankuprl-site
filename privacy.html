@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — RankupRL</title>
+  <meta name="description" content="How RankupRL handles your data — short version: it doesn't leave your machine.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='28'%3E%F0%9F%9A%80%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header>
+    <a href="./" class="brand">RankupRL</a>
+    <nav>
+      <a href="./privacy.html">Privacy</a>
+      <a href="./terms.html">Terms</a>
+      <a href="mailto:joshua.jerome@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main class="policy">
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated: 2026-06-01</p>
+
+    <div class="callout">
+      <strong>Short version:</strong> RankupRL is a local-first desktop
+      application. Your data stays on your computer. We don't run a
+      backend, we don't collect analytics, and we don't share your data
+      with anyone. The longer version below spells out the details.
+    </div>
+
+    <h2>1. Who we are</h2>
+    <p>
+      RankupRL is a personal-use desktop application maintained by Joshua
+      Jerome. There is no company, no employees, no shareholders — it is
+      one developer's project. References to "we" in this document refer
+      to that maintainer.
+    </p>
+    <p>
+      Contact: <a href="mailto:joshua.jerome@gmail.com">joshua.jerome@gmail.com</a>.
+    </p>
+
+    <h2>2. Scope</h2>
+    <p>
+      This policy covers the RankupRL desktop application and this
+      website (rankuprl-site on GitHub Pages). It does not cover the
+      third-party services RankupRL interacts with — each has its own
+      privacy policy, linked at the bottom of this page.
+    </p>
+
+    <h2>3. What we store, and where</h2>
+    <p>
+      Everything RankupRL stores lives in a local SQLite database on your
+      computer, in your operating system's standard application-data
+      directory:
+    </p>
+    <ul>
+      <li><strong>Windows:</strong> <code>%APPDATA%\com.rlrankup.app\rlrankup.db</code></li>
+      <li><strong>macOS:</strong> <code>~/Library/Application Support/com.rlrankup.app/rlrankup.db</code></li>
+      <li><strong>Linux:</strong> <code>~/.local/share/com.rlrankup.app/rlrankup.db</code></li>
+    </ul>
+    <p>What's in that database:</p>
+    <ul>
+      <li>Profile information you enter (name, emoji, theme preference).</li>
+      <li>OAuth connection tokens for Steam, Epic, or Google when you
+        sign in (used only to call those services as you — see Section 5).</li>
+      <li>Watchlists you create (groups of player handles you're tracking).</li>
+      <li>Recently fetched tracker.gg stats, cached so we don't re-query
+        on every load.</li>
+      <li>UI preferences (theme choice, sidebar state).</li>
+    </ul>
+    <p>
+      We do not store passwords. OAuth flows never expose your account
+      password to RankupRL — that stays between you and the provider.
+    </p>
+
+    <h2>4. What we send outward</h2>
+    <p>
+      The desktop application makes network requests to the following
+      services. Each request is made directly from your machine; no
+      RankupRL-controlled server proxies any of it.
+    </p>
+    <ul>
+      <li><strong>tracker.gg / api.tracker.gg</strong> — to look up
+        Rocket League stats for the player handles you've added (your
+        own account or anyone on your watchlists). The only data
+        transmitted is the player handle (e.g., your Epic display name
+        or SteamID64), which is already public.</li>
+      <li><strong>Steam Web API (api.steampowered.com)</strong> — when
+        you sign in with Steam, used to fetch your persona name + avatar
+        and, in a future phase, your friends list. Requires a Steam Web
+        API key you configure as an environment variable.</li>
+      <li><strong>Epic Account Services (api.epicgames.dev,
+        epicgames.com)</strong> — when you sign in with Epic, used to
+        verify your identity, fetch your display name, and (with your
+        consent) read your friends list and online presence.</li>
+      <li><strong>Google APIs (planned, Phase 6.5)</strong> — when you
+        opt in to Google Drive backup, used to write encrypted backups
+        of your local database to a folder in your Drive.</li>
+    </ul>
+    <p>
+      RankupRL also embeds a hidden browser window pointed at
+      tracker.network so that tracker.gg's public API will accept our
+      requests (it requires the request to originate from its own
+      domain). That window's session cookies live in your application
+      data directory like any browser session would.
+    </p>
+
+    <h2>5. What we don't do</h2>
+    <ul>
+      <li><strong>No analytics or telemetry.</strong> RankupRL does not
+        report usage, crash data, screen views, or any other event to
+        any server.</li>
+      <li><strong>No remote backend (yet).</strong> There is no
+        RankupRL-controlled server. Your data stays on your machine.</li>
+      <li><strong>No advertising.</strong> The application contains no
+        ads and does not pass any data to ad networks.</li>
+      <li><strong>No data sharing.</strong> We do not sell, rent, or
+        share your data with anyone. There is no marketing list.</li>
+      <li><strong>No tracking cookies.</strong> The application stores a
+        handful of preferences in local storage (theme choice, sidebar
+        collapsed/expanded). These never leave your machine.</li>
+    </ul>
+
+    <h2>6. OAuth tokens — how they're handled</h2>
+    <p>
+      When you click "Sign in with Steam" or "Sign in with Epic," the
+      provider returns an access token (and sometimes a refresh token)
+      to RankupRL. Those tokens are stored in your local database,
+      encrypted at rest by your operating system's standard file
+      permissions on the application data directory.
+    </p>
+    <p>
+      The tokens are used only to call the provider's APIs <em>as
+      you</em> — for example, to fetch your Steam friends list when you
+      open the Friends tab. The tokens never leave your machine and are
+      never sent to any third party.
+    </p>
+    <p>
+      You can revoke a connection at any time:
+    </p>
+    <ul>
+      <li>From within RankupRL: Settings → Connections → Disconnect.</li>
+      <li>From the provider's site:
+        <a href="https://steamcommunity.com/my/edit/settings" target="_blank" rel="noopener">Steam account settings</a>
+        or
+        <a href="https://www.epicgames.com/account/connected-apps" target="_blank" rel="noopener">Epic connected apps</a>.</li>
+    </ul>
+
+    <h2>7. Deleting your data</h2>
+    <p>
+      To completely remove all data RankupRL has stored about you, do
+      both of the following:
+    </p>
+    <ol>
+      <li>Uninstall the RankupRL application.</li>
+      <li>Delete the application data directory listed in Section 3.</li>
+    </ol>
+    <p>
+      That deletes everything: profiles, connections, OAuth tokens,
+      cached stats, preferences. There is no other copy.
+    </p>
+
+    <h2>8. Children's privacy</h2>
+    <p>
+      RankupRL is not directed at children under 13. We do not knowingly
+      collect data from anyone under that age.
+    </p>
+
+    <h2>9. Third-party services</h2>
+    <p>
+      When you use RankupRL, the third-party services it talks to are
+      governed by their own privacy policies:
+    </p>
+    <ul>
+      <li><a href="https://tracker.network/privacy" target="_blank" rel="noopener">Tracker Network privacy policy</a></li>
+      <li><a href="https://store.steampowered.com/privacy_agreement/" target="_blank" rel="noopener">Steam (Valve) privacy policy</a></li>
+      <li><a href="https://www.epicgames.com/site/privacypolicy" target="_blank" rel="noopener">Epic Games privacy policy</a></li>
+      <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy policy</a> (when Drive backup ships)</li>
+    </ul>
+
+    <h2>10. Changes to this policy</h2>
+    <p>
+      If we change this policy, the "Last updated" date at the top of
+      the page will be bumped. Material changes (e.g., adding a new
+      third-party service or starting any kind of data collection) will
+      be called out prominently in the application's release notes.
+    </p>
+
+    <h2>11. Contact</h2>
+    <p>
+      Questions about this policy or about how RankupRL handles your
+      data: <a href="mailto:joshua.jerome@gmail.com">joshua.jerome@gmail.com</a>.
+    </p>
+  </main>
+
+  <footer>
+    &copy; 2026 RankupRL ·
+    <a href="./">Home</a> ·
+    <a href="./terms.html">Terms</a>
+  </footer>
+</body>
+</html>
