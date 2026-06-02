@@ -21,11 +21,13 @@ compatibility_date = "2026-06-01"
 # off by default for free tier — turn on only if debugging in prod.
 # logpush = true
 
-# Replace <PLACEHOLDER_KV_ID> with the namespace id printed by
-# `wrangler kv namespace create RATE_LIMIT`. See SETUP.md.
+# Created via `wrangler kv namespace create RATE_LIMIT` on 2026-06-02.
+# The namespace title in Cloudflare's dashboard is cosmetic; what the
+# Worker uses is `binding` (referenced as `env.RATE_LIMIT` in src/index.ts)
+# bound to the `id` below.
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "<PLACEHOLDER_KV_ID>"
+id = "141bf7c075554589b42433414d2c5799"
 
 # Bind to the custom domain once api.rankuprl.app is set up. Until then
 # the Worker is reachable at rankuprl-steam-proxy.<account>.workers.dev.
