@@ -1,0 +1,50 @@
+# Cloudflare Worker: RankupRL Steam Web API proxy.
+#
+# Endpoints (mounted at api.rankuprl.app once the custom domain is bound):
+#   GET /steam/friends?steamid=<id>       → ISteamUser/GetFriendList
+#   GET /steam/summaries?steamids=<csv>   → ISteamUser/GetPlayerSummaries
+#   GET /health                            → 200 OK for monitoring
+#
+# Auth: every /steam/* request must carry `Authorization: Bearer <epic_access_token>`.
+# The Worker verifies the token via Epic's /userInfo and rate-limits per Epic Account ID.
+#
+# Secrets (set via `wrangler secret put`):
+#   STEAM_WEB_API_KEY      Steam Web API key registered with rankuprl.app as the domain
+#
+# Bindings (created via `wrangler kv namespace create RATE_LIMIT`):
+#   RATE_LIMIT             KV namespace for the per-account sliding-window counter
+
+name = "rankuprl-steam-proxy"
+main = "src/index.ts"
+compatibility_date = "2026-06-01"
+# Workers logs to wrangler tail when this is on. Free with Workers paid plan,
+# off by default for free tier — turn on only if debugging in prod.
+# logpush = true
+
+# Replace <PLACEHOLDER_KV_ID> with the namespace id printed by
+# `wrangler kv namespace create RATE_LIMIT`. See SETUP.md.
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "<PLACEHOLDER_KV_ID>"
+
+# Bind to the custom domain once api.rankuprl.app is set up. Until then
+# the Worker is reachable at rankuprl-steam-proxy.<account>.workers.dev.
+#
+# Uncomment once Cloudflare's DNS is registered as the authoritative
+# nameservers for rankuprl.app (or once the domain is moved off the
+# GitHub Pages-only setup). See SETUP.md for the migration.
+#
+# routes = [
+#   { pattern = "api.rankuprl.app/*", custom_domain = true }
+# ]
+
+[vars]
+# Allowed origin(s) for CORS. The Tauri app's webview origin is
+# `tauri://localhost` in dev/prod; vite dev runs at http://localhost:1420.
+# Comma-separated.
+ALLOWED_ORIGINS = "tauri://localhost,http://localhost:1420"
+
+# How many requests per Epic Account ID per minute. Steam-side throttling
+# is generous (~100k/day per key) but we still want a per-user ceiling
+# so one buggy install can't burn the whole quota.
+RATE_LIMIT_PER_MINUTE = "60"
