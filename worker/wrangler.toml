@@ -21,21 +21,26 @@ compatibility_date = "2026-06-01"
 # off by default for free tier — turn on only if debugging in prod.
 # logpush = true
 
+# Custom domain bound 2026-06-03 via the dashboard (Workers & Pages →
+# rankuprl-steam-proxy → Settings → Domains & Routes → Custom Domains).
+# Declaring it here too means `wrangler deploy` will recreate the
+# binding if it ever gets deleted by hand.
+#
+# Must live at the top level — once any `[[table]]` opens below, TOML
+# treats subsequent keys as belonging to that table (which is why
+# wrangler warned `Unexpected fields found in kv_namespaces[0]:
+# "routes"` when this block sat after [[kv_namespaces]]).
+routes = [
+  { pattern = "api.rankuprl.app/*", custom_domain = true }
+]
+
 # Created via `wrangler kv namespace create RATE_LIMIT` on 2026-06-02.
 # The namespace title in Cloudflare's dashboard is cosmetic; what the
 # Worker uses is `binding` (referenced as `env.RATE_LIMIT` in src/index.ts)
 # bound to the `id` below.
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "141bf7c075554589b42433414d2c5799"
-
-# Custom domain bound 2026-06-03 via the dashboard (Workers & Pages →
-# rankuprl-steam-proxy → Settings → Domains & Routes → Custom Domains).
-# Declaring it here too means `wrangler deploy` will recreate the
-# binding if it ever gets deleted by hand.
-routes = [
-  { pattern = "api.rankuprl.app/*", custom_domain = true }
-]
+id = "e7a05d24208a4d179ea7a196e7e4fff7"
 
 [vars]
 # Allowed origin(s) for CORS. The Tauri app's webview origin is
