@@ -185,27 +185,29 @@ The trailing few should print `429`.
 
 ---
 
-## 8. Bind `api.rankuprl.app` (optional now, required for Slice B)
+## 8. Bind `api.rankuprl.app` (required for Slice B)
 
 The `.workers.dev` URL is fine for testing, but the desktop migration
-(Slice B) will point at `api.rankuprl.app`. Binding the subdomain
-needs Cloudflare to be the authoritative DNS for `rankuprl.app`.
+(Slice B) hits `api.rankuprl.app`. There are **two** "bind a domain"
+features in Cloudflare and they're not the same — use **Custom
+Domain**, not Routes.
 
-You already own the domain via Cloudflare Registrar, so DNS lives
-on Cloudflare by default — no nameserver migration needed.
+| Feature | Where | Auto-creates DNS? |
+|---|---|---|
+| Workers Routes (zone level) | Websites → rankuprl.app → Workers Routes | ❌ No — needs a DNS record to exist already |
+| **Workers Custom Domain (worker level)** | **Workers & Pages → click the worker → Settings → Domains & Routes → Custom Domains** | ✅ Yes — proxied CNAME + TLS cert auto-provisioned |
 
-1. Cloudflare dashboard → **Websites** → click `rankuprl.app`.
-2. Left sidebar → **Workers Routes** (under Workers).
-3. Hit **Add route**.
-4. Route: `api.rankuprl.app/*`
-5. Worker: `rankuprl-steam-proxy`
-6. Save.
+1. Cloudflare dashboard → **Workers & Pages** → click `rankuprl-steam-proxy`.
+2. **Settings** tab → scroll to **Domains & Routes**.
+3. Under **Custom Domains**, hit **+ Add**.
+4. Enter `api.rankuprl.app` → **Add Domain**.
 
-DNS auto-creates an `api` CNAME pointing at the Worker. Propagates
-in <1 minute.
+Cloudflare proxied-CNAME + Let's-Encrypt cert provision in <1
+minute.
 
 Then uncomment the `routes = [...]` block in `wrangler.toml` so
-subsequent `wrangler deploy` runs preserve the binding:
+subsequent `wrangler deploy` runs declare the same binding (idempotent
+— Cloudflare won't double-create):
 
 ```toml
 routes = [
@@ -213,13 +215,22 @@ routes = [
 ]
 ```
 
-Test:
+Test from a fresh DNS cache (macOS `sudo dscacheutil -flushcache`
+then `sudo killall -HUP mDNSResponder` if your local resolver is
+stale):
 
 ```bash
 curl https://api.rankuprl.app/health
 ```
 
-Should return `{"ok":true}`.
+Should return `{"ok":true}`. If your local cache won't clear, you
+can verify externally with:
+
+```bash
+curl --resolve api.rankuprl.app:443:104.21.60.62 https://api.rankuprl.app/health
+```
+
+(Resolves to a Cloudflare anycast IP directly — bypasses local DNS.)
 
 ---
 

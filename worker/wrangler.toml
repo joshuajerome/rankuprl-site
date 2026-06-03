@@ -29,16 +29,13 @@ compatibility_date = "2026-06-01"
 binding = "RATE_LIMIT"
 id = "141bf7c075554589b42433414d2c5799"
 
-# Bind to the custom domain once api.rankuprl.app is set up. Until then
-# the Worker is reachable at rankuprl-steam-proxy.<account>.workers.dev.
-#
-# Uncomment once Cloudflare's DNS is registered as the authoritative
-# nameservers for rankuprl.app (or once the domain is moved off the
-# GitHub Pages-only setup). See SETUP.md for the migration.
-#
-# routes = [
-#   { pattern = "api.rankuprl.app/*", custom_domain = true }
-# ]
+# Custom domain bound 2026-06-03 via the dashboard (Workers & Pages →
+# rankuprl-steam-proxy → Settings → Domains & Routes → Custom Domains).
+# Declaring it here too means `wrangler deploy` will recreate the
+# binding if it ever gets deleted by hand.
+routes = [
+  { pattern = "api.rankuprl.app/*", custom_domain = true }
+]
 
 [vars]
 # Allowed origin(s) for CORS. The Tauri app's webview origin is
