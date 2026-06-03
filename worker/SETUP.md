@@ -256,5 +256,18 @@ KV usage: **Workers KV** → click the namespace. Free tier is 100k
 reads + 1k writes per day. Each Worker request = ~1 read + 1 write
 (rate limit bump). Stays well under at single-digit users.
 
-**Set a billing alert** at $5 in Cloudflare dashboard → **Billing**
-so you're warned before any surprise costs.
+### Billing alert ($5)
+
+Set this before walking away. Two clicks:
+
+1. Cloudflare dashboard → top-right account menu → **Billing**.
+2. **Notifications** tab (or sidebar entry) → **Add** → pick the
+   "Usage based billing" notification type → set threshold = **$5
+   per billing period** → **Save**.
+
+Why $5: you stay $0 forever on the free tier; if a misconfiguration
+or sudden traffic spike pushes us onto the paid Workers plan
+(baseline $5/mo), the alert catches it at the first dollar of bill
+rather than at the end-of-month invoice. No notifications fire if
+you stay on free tier; lots of inbox noise when something's genuinely
+wrong is the right tradeoff.
