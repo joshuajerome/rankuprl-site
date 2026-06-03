@@ -26,12 +26,17 @@ compatibility_date = "2026-06-01"
 # Declaring it here too means `wrangler deploy` will recreate the
 # binding if it ever gets deleted by hand.
 #
-# Must live at the top level — once any `[[table]]` opens below, TOML
-# treats subsequent keys as belonging to that table (which is why
-# wrangler warned `Unexpected fields found in kv_namespaces[0]:
-# "routes"` when this block sat after [[kv_namespaces]]).
+# Two gotchas baked into this short block:
+#   1. Must live at top level — once any `[[table]]` opens below,
+#      TOML treats subsequent keys as belonging to that table (which
+#      is why wrangler warned `Unexpected fields found in
+#      kv_namespaces[0]: "routes"` when this block sat after
+#      [[kv_namespaces]]).
+#   2. When custom_domain = true, the pattern is a bare hostname.
+#      No path, no `/*` wildcard. That suffix would be valid for the
+#      legacy Workers Routes feature, but not for Custom Domains.
 routes = [
-  { pattern = "api.rankuprl.app/*", custom_domain = true }
+  { pattern = "api.rankuprl.app", custom_domain = true }
 ]
 
 # Created via `wrangler kv namespace create RATE_LIMIT` on 2026-06-02.
