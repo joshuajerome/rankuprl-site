@@ -21,6 +21,13 @@ compatibility_date = "2026-06-01"
 # off by default for free tier — turn on only if debugging in prod.
 # logpush = true
 
+# Keep the rankuprl-steam-proxy.rankuprl.workers.dev fallback URL
+# alive even though the canonical entry point is api.rankuprl.app.
+# Useful when local DNS for api.rankuprl.app is stale (we hit this
+# during Slice A) or for quick smoke checks before the custom-domain
+# binding has propagated.
+workers_dev = true
+
 # Custom domain bound 2026-06-03 via the dashboard (Workers & Pages →
 # rankuprl-steam-proxy → Settings → Domains & Routes → Custom Domains).
 # Declaring it here too means `wrangler deploy` will recreate the
